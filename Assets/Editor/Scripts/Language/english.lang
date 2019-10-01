@@ -1,0 +1,54 @@
+Name:English
+Order:LeftToRight
+Letter:A
+	Isolated:41
+Letter:B
+	Isolated:42
+Letter:C
+	Isolated:43
+Letter:D
+	Isolated:44
+Letter:E
+	Isolated:45
+Letter:F
+	Isolated:46
+Letter:G
+	Isolated:47
+Letter:H
+	Isolated:48
+Letter:I
+	Isolated:49
+Letter:J
+	Isolated:4A
+Letter:K
+	Isolated:4B
+Letter:L
+	Isolated:4C
+Letter:M
+	Isolated:4D
+Letter:N
+	Isolated:4E
+Letter:O
+	Isolated:4F
+Letter:P
+	Isolated:50
+Letter:Q
+	Isolated:51
+Letter:R
+	Isolated:52
+Letter:S
+	Isolated:53
+Letter:T
+	Isolated:54
+Letter:U
+	Isolated:55
+Letter:V
+	Isolated:56
+Letter:W
+	Isolated:57
+Letter:X
+	Isolated:58
+Letter:Y
+	Isolated:59
+Letter:Z
+	Isolated:5A

@@ -1,0 +1,148 @@
+Name:Farsi
+Order:RightToLeft
+Letter:Alef
+	Isolated:627
+	Final:FE8E
+Letter:Be
+	Isolated:628
+	Initial:FE91
+	Medial:FE92
+	Final:FE90
+Letter:Te
+	Isolated:62A
+	Initial:FE97
+	Medial:FE98
+	Final:FE96
+Letter:Se
+	Isolated:62B
+	Initial:FE9B
+	Medial:FE9C
+	Final:FE9A
+Letter:Jiim
+	Isolated:62C
+	Initial:FE9F
+	Medial:FEA0
+	Final:FE9E
+Letter:Heh
+	Isolated:62D
+	Initial:FEA3
+	Medial:FEA4
+	Final:FEA2
+Letter:Kheh
+	Isolated:62E
+	Initial:FEA7
+	Medial:FEA8
+	Final:FEA6
+Letter:Daal
+	Isolated:62F
+	Final:FEAA
+Letter:Zaal
+	Isolated:630
+	Final:FEAC
+Letter:Reh
+	Isolated:631
+	Final:FEAE
+Letter:Zeh
+	Isolated:632
+	Final:FEAF
+Letter:Siin
+	Isolated:633
+	Initial:FEB3
+	Medial:FEB4
+	Final:FEB2
+Letter:Shiin
+	Isolated:634
+	Initial:FEB7
+	Medial:FEB8
+	Final:FEB6
+Letter:Saad
+	Isolated:635
+	Initial:FEBB
+	Medial:FEBC
+	Final:FEBA
+Letter:Zaad
+	Isolated:636
+	Initial:FEBF
+	Medial:FEC0
+	Final:FEBE
+Letter:Taa
+	Isolated:637
+	Initial:FEC3
+	Medial:FEC4
+	Final:FEC2
+Letter:Zaa
+	Isolated:638
+	Initial:FEC7
+	Medial:FEC8
+	Final:FEC6
+Letter:Eyn
+	Isolated:639
+	Initial:FECB
+	Medial:FECC
+	Final:FECA
+Letter:Geyn
+	Isolated:63A
+	Initial:FECF
+	Medial:FED0
+	Final:FECE
+Letter:Fe
+	Isolated:641
+	Initial:FED3
+	Medial:FED4
+	Final:FED2
+Letter:Qaaf
+	Isolated:642
+	Initial:FED7
+	Medial:FED8
+	Final:FED6
+Letter:Laam
+	Isolated:644
+	Initial:FEDF
+	Medial:FEE0
+	Final:FEDE
+Letter:Miim
+	Isolated:645
+	Initial:FEE3
+	Medial:FEE4
+	Final:FEE2
+Letter:Noon
+	Isolated:646
+	Initial:FEE7
+	Medial:FEE8
+	Final:FEE6
+Letter:He
+	Isolated:647
+	Initial:FEEB
+	Medial:FEEC
+	Final:FEEA
+Letter:Vaav
+	Isolated:648
+	Final:FEEE
+Letter:Ye
+	Isolated:6CC
+	Initial:FBFE
+	Medial:FBFF
+	Final:FBFD
+Letter:Pe
+	Isolated:67E
+	Initial:FB58
+	Medial:FB59
+	Final:FB57
+Letter:Che
+	Isolated:686
+	Initial:FB7C
+	Medial:FB7D
+	Final:FB7B
+Letter:Zhe
+	Isolated:698
+	Final:FB8B
+Letter:Kaaf
+	Isolated:6A9
+	Initial:FB90
+	Medial:FB91
+	Final:FB8F
+Letter:Ghaaf
+	Isolated:6AF
+	Initial:FB94
+	Medial:FB95
+	Final:FB93

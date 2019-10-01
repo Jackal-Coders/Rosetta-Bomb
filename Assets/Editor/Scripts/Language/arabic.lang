@@ -1,0 +1,133 @@
+Name:Arabic
+Order:RightToLeft
+Letter:Alif
+	Isolated:627
+	Final:FE8E
+Letter:Baa
+	Isolated:628
+	Initial:FE91
+	Medial:FE92
+	Final:FE90
+Letter:Ta
+	Isolated:62A
+	Initial:FE97
+	Medial:FE98
+	Final:FE96
+Letter:Tha
+	Isolated:62B
+	Initial:FE9B
+	Medial:FE9C
+	Final:FE9A
+Letter:Jiim
+	Isolated:62C
+	Initial:FE9F
+	Medial:FEA0
+	Final:FE9E
+Letter:Ha
+	Isolated:62D
+	Initial:FEA3
+	Medial:FEA4
+	Final:FEA2
+Letter:Kha
+	Isolated:62E
+	Initial:FEA7
+	Medial:FEA8
+	Final:FEA6
+Letter:Daal
+	Isolated:62F
+	Final:FEAA
+Letter:Thaal
+	Isolated:630
+	Final:FEAC
+Letter:Raa
+	Isolated:631
+	Final:FEAE
+Letter:Zaay
+	Isolated:632
+	Final:FEAF
+Letter:Siin
+	Isolated:633
+	Initial:FEB3
+	Medial:FEB4
+	Final:FEB2
+Letter:Shiin
+	Isolated:634
+	Initial:FEB7
+	Medial:FEB8
+	Final:FEB6
+Letter:Saad
+	Isolated:635
+	Initial:FEBB
+	Medial:FEBC
+	Final:FEBA
+Letter:Daad
+	Isolated:636
+	Initial:FEBF
+	Medial:FEC0
+	Final:FEBE
+Letter:Taa
+	Isolated:637
+	Initial:FEC3
+	Medial:FEC4
+	Final:FEC2
+Letter:Dhaa
+	Isolated:638
+	Initial:FEC7
+	Medial:FEC8
+	Final:FEC6
+Letter:Ayn
+	Isolated:639
+	Initial:FECB
+	Medial:FECC
+	Final:FECA
+Letter:Ghayn
+	Isolated:63A
+	Initial:FECF
+	Medial:FED0
+	Final:FECE
+Letter:Faa
+	Isolated:641
+	Initial:FED3
+	Medial:FED4
+	Final:FED2
+Letter:Qaaf
+	Isolated:642
+	Initial:FED7
+	Medial:FED8
+	Final:FED6
+Letter:Kaaf
+	Isolated:643
+	Initial:FEDB
+	Medial:FEDC
+	Final:FEDA
+Letter:Laam
+	Isolated:644
+	Initial:FEDF
+	Medial:FEE0
+	Final:FEDE
+Letter:Miim
+	Isolated:645
+	Initial:FEE3
+	Medial:FEE4
+	Final:FEE2
+Letter:Noon
+	Isolated:646
+	Initial:FEE7
+	Medial:FEE8
+	Final:FEE6
+Letter:Haa
+	Isolated:647
+	Initial:FEEB
+	Medial:FEEC
+	Final:FEEA
+Letter:Waaw
+	Isolated:648
+	Final:FEEE
+Letter:Yaa
+	Isolated:64A
+	Initial:FEF3
+	Medial:FEF4
+	Final:FEF2
+Letter:Teh Marbuta
+	Isolated:629
+	Final:FE94
