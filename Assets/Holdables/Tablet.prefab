@@ -265,7 +265,6 @@ GameObject:
   - component: {fileID: 54127511008666516}
   - component: {fileID: 65528232484671698}
   - component: {fileID: 114647661843446436}
-  - component: {fileID: 114819941931257536}
   m_Layer: 0
   m_Name: Tablet
   m_TagString: Untagged
@@ -700,7 +699,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1359382895359510}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1423,8 +1422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 0}
-  Children:
-  - {fileID: 114006882310989888}
+  Children: []
   IsPassThrough: 0
   ChildRowLength: 1
   Highlight: {fileID: 114261719369232398}
@@ -1921,11 +1919,6 @@ MonoBehaviour:
   input: {fileID: 114170163998409076}
   saveBtn: {fileID: 114267611661356408}
   revertBtn: {fileID: 114451642484233504}
-  configsToLoad:
-  - {fileID: 114490409081866576, guid: e7ee61d0d473653418f7af982b8f037b, type: 2}
-  - {fileID: 114418212110947100, guid: c8c5913802acfb946a247712a44b38ef, type: 2}
-  - {fileID: 114785186056477490, guid: 6fd3b08531cbcfd41a04db6f87e3fc8f, type: 2}
-  - {fileID: 114241047502768086, guid: f9636c9b9270291449d542f81a07ccdb, type: 2}
 --- !u!114 &114660166038422790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2226,19 +2219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightScale: {x: 0, y: 0, z: 0}
   OutlineAmount: 0
---- !u!114 &114819941931257536
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1359382895359510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -289456416, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Settings: 
-  SettingsPath: 
 --- !u!114 &114893685453999418
 MonoBehaviour:
   m_ObjectHideFlags: 1

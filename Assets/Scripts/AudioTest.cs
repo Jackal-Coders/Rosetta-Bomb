@@ -8,7 +8,7 @@ public class AudioTest : MonoBehaviour {
     public KMSelectable passButton;
     public KMSelectable button;
 
-    public KMAudio audio;
+    public new KMAudio audio;
     public Transform point;
 
     public WLCConfig configComponent;

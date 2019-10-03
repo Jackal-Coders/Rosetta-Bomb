@@ -16,6 +16,10 @@ public class Keypad : MonoBehaviour {
 	// module object
 	public KMBombModule module;
 
+	/// <summary>
+	///  yea
+	/// </summary>
+
 	public TextMesh questionText;
 
 	// buttons objects. Custom classes can't be used here.
