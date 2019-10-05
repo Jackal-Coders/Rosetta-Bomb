@@ -32,7 +32,7 @@ public class DynamicGUISize : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		if (!parent && transform.parent.GetComponent<RectTransform>() != null) {
+		if (!parent && transform.parent != null && transform.parent.GetComponent<RectTransform>() != null) {
 			parent = (RectTransform)transform.parent;
 		}
 		if (!selfTrans)

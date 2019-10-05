@@ -8,62 +8,155 @@ using System;
 public class KOSDesktop : MonoBehaviour {
 
 	[Header("OS GUI References")]
+	public RectTransform appDisplayArea;
 	public Text timeText;
 	public Image exitImage;
 	public float exitImageHighlightMult = 1.1f;
-	public Text messageBarText;
-	public string infoColor = "white";
-	public string warningColor = "orange";
-	public string errorColor = "red";
 	public Sprite defaultAppIcon;
-	public KOSApp defaultApp;
+	public Text messageBarText;
+	public Transform appIconParent;
+	public GameObject appIconTemplate;
+	public Color appIconBackground = new Color(0f, 0.55f, 0.95f, 0.4f);
+	public CanvasGroup lockScreenRend;
+	public float lockScreenFadeSpeed = 2f;
+	public Text lockScreenTimeText;
+	public Image lockNotificationImage;
+	public Sprite warningIcon;
+	public Sprite errorIcon;
+	public Color warningColor;
+	public Color errorColor;
 
 	[Header("KTANE References")]
 	public KMSelectable selectable;
 	public KMHoldable holdable;
 
 	[Header("Desktop Settings")]
-	public Vector2 size = new Vector2(322f, 210f);
+	internal Vector2 size = new Vector2(322f, 210f);
 	public float dragSpeed = 1f;
-
-
-	public List<KOSApp> apps;
+	public Font textFont;
+	
+	public Dictionary<int, KOSApp> apps = new Dictionary<int, KOSApp>();
 
 	private float lastFrameTime;
 	private Color exitImageBaseColor;
-	private Queue<Message> consoleMessages = new Queue<Message>();
 
 	private void Awake() {
+		Application.logMessageReceivedThreaded += HandleLog;
+
 		lastFrameTime = Time.time;
 		exitImageBaseColor = exitImage.color;
+		size = appDisplayArea.rect.size;
+
+		// try loading all the apps under appDisplayArea
+		for (int c = 0; c < appDisplayArea.childCount; c++) {
+			KOSApp app = appDisplayArea.GetChild(c).GetComponent<KOSApp>();
+			if (app != null) {
+				app.RegisterToDesktop(this);
+			}
+			// make sure each object is disabled by default
+			app.gameObject.SetActive(false);
+		}
+
+		// load all app icons
+		foreach(int id in apps.Keys) {
+			KOSApp app = apps[id];
+
+			GameObject iconObj = Instantiate(appIconTemplate, appIconParent, false);
+			iconObj.name = "App Icon:" + id;
+
+			iconObj.transform.GetChild(0).GetComponent<Image>().color = Color.clear;
+
+			iconObj.transform.GetChild(1).GetComponent<Image>().sprite = (app.appIcon != null ? app.appIcon : defaultAppIcon);
+		
+			iconObj.transform.GetChild(2).GetComponent<Text>().text = app.appName;
+
+			iconObj.SetActive(true);
+		}
+
+		UpdateTimeTexts();
 	}
 
+	public bool IsPickedUp() {
+		return Vector3.Dot(transform.up, Vector3.up) < 0.5f;
+	}
+
+	public bool TrySafeRegisterApp(KOSApp app) {
+		if (apps.ContainsValue(app))
+			return false;
+		apps.Add(apps.Count, app);
+		app.AppStart(); // Started by OS
+		Debug.Log("App registered: " + app);
+		return true;
+	}
+
+	public void RegisterApp(KOSApp app) {
+		if (!TrySafeRegisterApp(app)) {
+			Debug.LogError("App already registered: " + app);
+		}
+	}
+
+	public void HandleLog(string message, string stack, LogType type) {
+		KOSConsole.Print(message + "\n" + stack, type);
+	}
+
+	public void UpdateMessageBar() {
+		KOSConsole.Message msg = KOSConsole.GetLastMessage();
+		messageBarText.text = msg.GetTitle();
+		messageBarText.color = msg.GetColor() * 2f;
+
+		if (msg.GetMessageType() == LogType.Warning) {
+			lockNotificationImage.enabled = true;
+			lockNotificationImage.sprite = warningIcon;
+			lockNotificationImage.color = warningColor;
+		}
+		if (msg.GetMessageType() == LogType.Error) {
+			lockNotificationImage.enabled = true;
+			lockNotificationImage.sprite = errorIcon;
+			lockNotificationImage.color = errorColor;
+		}
+	}
+
+	public void UpdateTimeTexts() {
+		string timeStr = DateTime.Now.ToShortTimeString();
+		timeText.text = timeStr;
+		lockScreenTimeText.text = timeStr; 
+	}
 
 	private void Update() {
-
 		// update time text every new second
 		if ((int)Time.time != (int)lastFrameTime) {
-			timeText.text = DateTime.Now.ToShortTimeString();
+			UpdateTimeTexts();
+		}
+
+		// show/hide lockscreen as necessary
+		lockScreenRend.alpha = Mathf.Lerp(lockScreenRend.alpha, (IsPickedUp() || Application.isEditor ? 0f : 1f), Time.deltaTime * lockScreenFadeSpeed);
+		if (lockScreenRend.alpha < 0.01f) {
+			lockScreenRend.alpha = 0f;
+			lockScreenRend.blocksRaycasts = false;
+		} else {
+			lockScreenRend.blocksRaycasts = true;
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space)) {
-			defaultApp.Open(this);
+			print(transform.position);
+			print(transform.localPosition);
+			print(transform.eulerAngles);
+			print(transform.localEulerAngles);
 		}
-
 	}
 
-	private void UpdateMessageBar(Message msg) {
-		messageBarText.text = "<color=" + (msg.type == MessageType.WARNING ? warningColor : (msg.type == MessageType.ERROR ? errorColor : infoColor)) + ">" + msg.type.ToString() + ": " + msg.message + "</color>";
+	public void AppHoverEnter(Image selectionBackground) {
+		selectionBackground.color = appIconBackground;
 	}
 
-	public void LogMessage(string message) {
-		LogMessage(message, MessageType.INFO);
+	public void AppHoverExit(Image selectionBackground) {
+		selectionBackground.color = Color.clear;
 	}
 
-	public void LogMessage(string message, MessageType type) {
-		Message msg = new Message(message, type);
-		consoleMessages.Enqueue(msg);
-		UpdateMessageBar(msg);
+	public void AppClicked(GameObject appIconParent) {
+		int id = int.Parse(appIconParent.name.Split(':')[1]);
+		if (!apps[id].IsOpen())
+			apps[id].Open();
 	}
 
 	public void ExitMouseEnter(BaseEventData data) {
@@ -78,21 +171,5 @@ public class KOSDesktop : MonoBehaviour {
 		selectable.OnDeselect.Invoke();
 	}
 
-	private class Message {
 
-		public string message;
-		public MessageType type;
-
-		public Message(string message, MessageType type) {
-			this.message = message;
-			this.type = type;
-		}
-
-	}
-
-	public enum MessageType {
-		INFO,
-		WARNING,
-		ERROR
-	}
 }
