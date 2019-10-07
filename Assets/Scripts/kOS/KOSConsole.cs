@@ -19,18 +19,6 @@ public class KOSConsole : KOSApp {
 		self = this;
 	}
 
-	public override void AppOpen() {
-
-	}
-
-	public override void AppUpdate() {
-	
-	}
-
-	public override void AppClose() {
-
-	}
-
 	public void OnMessageArrowClick(GameObject obj) {
 		if (!obj.name.StartsWith("Msg Obj:"))
 			return;

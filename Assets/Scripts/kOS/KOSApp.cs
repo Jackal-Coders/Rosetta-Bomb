@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class ResponseEvent : UnityEvent<Response> {
+}
 
 public abstract class KOSApp : MonoBehaviour {
 
 	public string appName;
 	public Sprite appIcon;
 
-	public bool singleton = true;
+	public bool isDialogue = false;
 	public bool canMove = true;
 	public bool canResize = true;
 
@@ -20,6 +25,7 @@ public abstract class KOSApp : MonoBehaviour {
 	public RectTransform scrollContentPane;
 	public ScrollRect scrollRect;
 	public Image resizeImage;
+	public Image exitImage;
 
 	protected KOSDesktop desktop;
 
@@ -32,6 +38,8 @@ public abstract class KOSApp : MonoBehaviour {
 	private bool useAnimations = false;
 	public float animationSpeed = 10f;
 
+	protected ResponseEvent responseEvent = new ResponseEvent();
+
 	public void RegisterToDesktop(KOSDesktop desktop) {
 		this.desktop = desktop;
 		this.desktop.RegisterApp(this);
@@ -41,6 +49,10 @@ public abstract class KOSApp : MonoBehaviour {
 		selfTrans = (RectTransform)transform;
 		SetCanMove(canMove); // make sure any GUI elements reflect our ability status
 		SetCanResize(canResize);
+		if (isDialogue) {
+			exitImage.enabled = false;
+		}
+		
 	}
 
 	/** Apps will override these methods */
@@ -58,8 +70,21 @@ public abstract class KOSApp : MonoBehaviour {
 
 	/* -- End Override Methods -- */
 
-	public bool IsSingleton() {
-		return singleton;
+	/* These are used to create response forms (dialogs) */
+	public void AddResponseAction(UnityAction<Response> action) {
+		responseEvent.AddListener(action);
+	}
+
+	public void OnResponseSend() {
+		// sends out the response object and event
+		// TODO Load app data as response to requesting apps
+		Response r = new Response(Response.Type.CANCEL);
+		responseEvent.Invoke(r);
+		responseEvent.RemoveAllListeners();
+	}
+
+	public bool IsDialogue() {
+		return isDialogue;
 	}
 
 	public void SetCanMove(bool canMove) {
@@ -210,4 +235,18 @@ public abstract class KOSApp : MonoBehaviour {
 	public override string ToString() {
 		return name;
 	}
+}
+
+public class Response {
+
+	public Type responseType;
+
+	public Response(Type rType) {
+		responseType = rType;
+	}
+
+	public enum Type {
+		ACCEPT, CANCEL
+	}
+
 }
