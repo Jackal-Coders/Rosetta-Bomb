@@ -9,14 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: Los Alamos
+  m_Name: readingMed
   m_EditorClassIdentifier: 
-  DisplayName: Los Alamos
-  Description: Mission that has only the official WLC mods available.
+  DisplayName: Reading - Medium
+  Description: Focuses on reading comprehension. Contains 2 Wire Quiz modules & 1
+    Binyanim module.
   GeneratorSetting:
-    TimeLimit: 600
+    TimeLimit: 480
     NumStrikes: 3
-    TimeBeforeNeedyActivation: 60
+    TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5
     ComponentPools:
@@ -25,6 +26,11 @@ MonoBehaviour:
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - WLC_AudioTest
-      - WLC_Language
-  PacingEventsEnabled: 1
+      - WLC_Quiz
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - WLC_Binyamin
+  PacingEventsEnabled: 0

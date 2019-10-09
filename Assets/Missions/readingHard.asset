@@ -9,14 +9,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: MSA Intermediate
+  m_Name: readingHard
   m_EditorClassIdentifier: 
-  DisplayName: MSA Intermediate
-  Description: Mission for testing some MSA questions.
+  DisplayName: Reading - Hard
+  Description: Focuses on reading comprehension. Contains 2 Wire Quiz modules, 2 Binyanim
+    modules, & 1 Keypad modules.
   GeneratorSetting:
     TimeLimit: 720
     NumStrikes: 3
-    TimeBeforeNeedyActivation: 30
+    TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5
     ComponentPools:
@@ -26,16 +27,16 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - WLC_Quiz
-    - Count: 2
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - WLC_Binyamin
     - Count: 1
       AllowedSources: 2
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
       - WLC_Keypad
-  PacingEventsEnabled: 1
+    - Count: 2
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - WLC_Binyamin
+  PacingEventsEnabled: 0

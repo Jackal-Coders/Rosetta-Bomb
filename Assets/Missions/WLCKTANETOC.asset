@@ -11,14 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: -434690030, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: WLCKTANETOC
   m_EditorClassIdentifier: 
-  Title: WLC Missions
+  Title: Language Training Missions
   Sections:
-  - Title: WLC Missions
+  - Title: Reading
     MissionIDs:
-    - Collective Mod Missions
-    - Some Mods
-    - Los Alamos
-  - Title: Target Language Testing
-    MissionIDs:
-    - MSA Test
-    - MSA Intermediate
+    - readingEasy
+    - readingMed
+    - readingHard
+  - Title: Experimental
+    MissionIDs: []
