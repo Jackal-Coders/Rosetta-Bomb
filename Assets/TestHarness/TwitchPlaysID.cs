@@ -967,7 +967,6 @@ public class TwitchPlaysID : MonoBehaviour
 		if (needQuaternionReset)
 		{
 			focus = TestHarness.MoveCamera(Module);
-			
 			while (focus.MoveNext())
 				yield return focus.Current;
 		}

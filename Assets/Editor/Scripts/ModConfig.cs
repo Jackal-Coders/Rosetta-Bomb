@@ -20,6 +20,12 @@ public sealed class ModConfig : ScriptableObject
         set { Instance.title = value; }
     }
 
+    public static string Author
+    {
+        get { return Instance.title; }
+        set { Instance.title = value; }
+    }
+
     public static string Description
     {
         get { return Instance.description; }
@@ -49,13 +55,15 @@ public sealed class ModConfig : ScriptableObject
     [SerializeField]
     private string title = "";
     [SerializeField]
+    private string author = "";
+    [SerializeField]
     [TextArea(5, 10)]
     private string description = "";
     [SerializeField]
     private string version = "";
     [SerializeField]
     private string outputFolder = "build";
-	[SerializeField]
+    [SerializeField]
     private Texture2D previewImage = null;
 
 
@@ -86,6 +94,7 @@ public sealed class ModConfig : ScriptableObject
         Dictionary<string, object> dict = new Dictionary<string, object>();
         dict.Add("id", id);
         dict.Add("title", title);
+        dict.Add("author", author);
         dict.Add("description", description);
         dict.Add("version", version);
         dict.Add("unityVersion", Application.unityVersion);

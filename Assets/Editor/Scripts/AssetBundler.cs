@@ -44,7 +44,7 @@ public class AssetBundler
     /// <summary>
     /// Folders which should not be included in the asset bundling process.
     /// </summary>
-    public static string[] EXCLUDED_FOLDERS = new string[] { "Assets/Editor", "Assets/TestHarness", "Assets/Plugins/GitHub" };
+    public static string[] EXCLUDED_FOLDERS = new string[] { "Assets/Editor", "Assets/TestHarness", "Assets/Plugins/GitHub", "Assets/WLCKTANE Assets/Editor"  };
 
 
     #region Internal bundler Variables
@@ -57,11 +57,6 @@ public class AssetBundler
     /// Output folder for the final asset bundle file
     /// </summary>
     private string outputFolder;
-
-	/// <summary>
-	/// Deployment folder to move the build to
-	/// </summary>
-	private string deployFolder;
 
     /// <summary>
     /// List of MonoScripts modified during the bundling process that need to be restored after.
@@ -102,19 +97,6 @@ public class AssetBundler
 
         bundler.assemblyName = ModConfig.ID;
         bundler.outputFolder = ModConfig.OutputFolder + "/" + bundler.assemblyName;
-		if (!EditorPrefs.HasKey("DEPLOYLOCATION"))
-			EditorPrefs.SetString("DEPLOYLOCATION", "C:/Program Files (x86)/Steam/steamapps/common/Keep Talking and Nobody Explodes/mods");
-
-		bundler.deployFolder = EditorPrefs.GetString("DEPLOYLOCATION");
-		// fix backslashes
-		if (bundler.deployFolder.Contains("\\")) {
-			bundler.deployFolder = bundler.deployFolder.Replace("\\", "/");
-		}
-		if (bundler.deployFolder.EndsWith("/"))
-			bundler.deployFolder += bundler.assemblyName;
-		else
-			bundler.deployFolder += "/" + bundler.assemblyName;
-
         if (Application.platform == RuntimePlatform.OSXEditor) bundler.target = BuildTarget.StandaloneOSX;
 
         bool success = false;
@@ -174,21 +156,8 @@ public class AssetBundler
         if (success)
         {
             Debug.LogFormat("{0} Build complete! Output: {1}", System.DateTime.Now.ToLocalTime(), bundler.outputFolder);
-
-			// move build folder to deployment folder
-			try {
-				if (Directory.Exists(bundler.deployFolder)) {
-					Directory.Delete(bundler.deployFolder, true);
-				}
-				string path = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/'));
-				FileUtil.CopyFileOrDirectory(path + "/" + bundler.outputFolder, bundler.deployFolder);
-				//Directory.Move(path + "/" + bundler.outputFolder, bundler.deployFolder);
-			}
-			catch (Exception e) {
-				Debug.LogErrorFormat("Ecception: {0}\n{1}", e.Message, e.StackTrace);
-				return;
-			}
-			Debug.LogFormat("{0} Deployment complete. Deployment {1}", System.DateTime.Now.ToLocalTime(), bundler.deployFolder);
+			// Added to supplement deployment to program
+			DeploymentEditor.Deploy();
 		}
     }
 
@@ -293,11 +262,11 @@ public class AssetBundler
         managedReferences.Add(unityAssembliesLocation + "UnityEngine");
 		managedReferences.Add(unityAssembliesLocation + "../UnityExtensions/Unity/GUISystem/UnityEngine.UI");
 
-        //Next we need to grab some type references and use reflection to build things the way Unity does.
-        //Note that EditorUtility.CompileCSharp will do *almost* exactly the same thing, but it unfortunately
-        //defaults to "unity" rather than "2.0" when selecting the .NET support for the classlib_profile.
+		//Next we need to grab some type references and use reflection to build things the way Unity does.
+		//Note that EditorUtility.CompileCSharp will do *almost* exactly the same thing, but it unfortunately
+		//defaults to "unity" rather than "2.0" when selecting the .NET support for the classlib_profile.
 
-        string[] scriptArray = scriptAssetPaths.ToArray();
+		string[] scriptArray = scriptAssetPaths.ToArray();
         string[] referenceArray = managedReferences.ToArray();
         string[] defineArray = allDefines.Split(';');
 

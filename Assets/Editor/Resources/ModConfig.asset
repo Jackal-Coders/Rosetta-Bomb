@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Name: ModConfig
   m_EditorClassIdentifier: 
   id: WLCKTANE
-  title: WLC KTANE Mods
-  description: Language-based KTANE mods for the WLC.
-  version: v0.1
+  title: WLCKTANE
+  author: 480th ISRG Programming Club
+  description: A collection of scripts/tools/modules to facilitate foreign learning
+    in a VR enviroment.
+  version: 1.0.1
   outputFolder: build
-  deployFolder: C:/Users/Gabriel/Documents/projects/KTANE Mods
   previewImage: {fileID: 0}
