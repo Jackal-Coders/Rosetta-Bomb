@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: 8a1742df5db1b4641a4802445aa8074d
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Wire_1
+    100002: Wire_1_Cut
+    100004: Wire_1_Highlight
+    100006: Wire_2
+    100008: Wire_2_Cut
+    100010: Wire_2_Highlight
+    100012: Wire_3
+    100014: Wire_3_Cut
+    100016: Wire_3_Highlight
+    100018: Wire_PuzzleBackground
+    100020: WireConnection
+    100022: //RootNode
+    400000: Wire_1
+    400002: Wire_1_Cut
+    400004: Wire_1_Highlight
+    400006: Wire_2
+    400008: Wire_2_Cut
+    400010: Wire_2_Highlight
+    400012: Wire_3
+    400014: Wire_3_Cut
+    400016: Wire_3_Highlight
+    400018: Wire_PuzzleBackground
+    400020: WireConnection
+    400022: //RootNode
+    2100000: No Name
+    2100002: Component_PuzzleBack_mat
+    2300000: Wire_1
+    2300002: Wire_1_Cut
+    2300004: Wire_1_Highlight
+    2300006: Wire_2
+    2300008: Wire_2_Cut
+    2300010: Wire_2_Highlight
+    2300012: Wire_3
+    2300014: Wire_3_Cut
+    2300016: Wire_3_Highlight
+    2300018: Wire_PuzzleBackground
+    2300020: WireConnection
+    3300000: Wire_1
+    3300002: Wire_1_Cut
+    3300004: Wire_1_Highlight
+    3300006: Wire_2
+    3300008: Wire_2_Cut
+    3300010: Wire_2_Highlight
+    3300012: Wire_3
+    3300014: Wire_3_Cut
+    3300016: Wire_3_Highlight
+    3300018: Wire_PuzzleBackground
+    3300020: WireConnection
+    4300000: Wire_3_Highlight
+    4300002: Wire_2_Highlight
+    4300004: Wire_1_Highlight
+    4300006: Wire_3_Cut
+    4300008: Wire_2_Cut
+    4300010: Wire_1_Cut
+    4300012: Wire_3
+    4300014: Wire_2
+    4300016: Wire_1
+    4300018: WireConnection
+    4300020: Wire_PuzzleBackground
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

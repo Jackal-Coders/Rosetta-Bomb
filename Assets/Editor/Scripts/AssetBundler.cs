@@ -44,7 +44,7 @@ public class AssetBundler
     /// <summary>
     /// Folders which should not be included in the asset bundling process.
     /// </summary>
-    public static string[] EXCLUDED_FOLDERS = new string[] { "Assets/Editor", "Assets/TestHarness", "Assets/Plugins/GitHub", "Assets/WLCKTANE Assets/Editor"  };
+    public static string[] EXCLUDED_FOLDERS = new string[] { "Assets/Editor", "Assets/TestHarness", "Assets/Plugins/GitHub", "Assets/Rosetta Bomb/Editor"  };
 
 
     #region Internal bundler Variables
@@ -157,7 +157,8 @@ public class AssetBundler
         {
             Debug.LogFormat("{0} Build complete! Output: {1}", System.DateTime.Now.ToLocalTime(), bundler.outputFolder);
 			// Added to supplement deployment to program
-			DeploymentEditor.Deploy();
+			if (EditorPrefs.HasKey("AUTODEPLOY") && EditorPrefs.GetBool("AUTODEPLOY"))
+				DeploymentEditor.Deploy();
 		}
     }
 
