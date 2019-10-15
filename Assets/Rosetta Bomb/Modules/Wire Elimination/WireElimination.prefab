@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 114243410470613982}
   - component: {fileID: 114544559964786332}
   m_Layer: 0
-  m_Name: WireQuiz
+  m_Name: WireElimination
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -32,5 +32,5 @@ MonoBehaviour:
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - RosettaBomb_Binyamin
+      - RosettaBomb_Dial
   PacingEventsEnabled: 0

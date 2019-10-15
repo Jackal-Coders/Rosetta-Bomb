@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 114980563687001148}
   - component: {fileID: 114654053804500464}
   m_Layer: 0
-  m_Name: Binyamin2
+  m_Name: Dial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,8 +503,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountdownTime: 40
-  ModuleType: RosettaBomb_Binyamin
-  ModuleDisplayName: Binyamin
+  ModuleType: RosettaBomb_Dial
+  ModuleDisplayName: Dial
   RequiresTimerVisibility: 1
   WarnAtFiveSeconds: 1
 --- !u!114 &11459210
