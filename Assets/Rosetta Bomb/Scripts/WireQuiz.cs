@@ -159,7 +159,16 @@ public class WireQuiz : MonoBehaviour {
 
 		// setup first question
 		SetPhase(phase);
-	}
+
+
+
+
+        ConditionParser conditionParser = new ConditionParser(BombInfo);
+        Condition condition = conditionParser.Parse("serial.even");
+        List<string> widgets = conditionParser.Check(condition);
+        //manualSectionText.text = widgets[0];
+        //Debug.Log(widgets);
+    }
 
 	private void Update() {
 		if (waitForTimer) {
