@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class WireQuiz : MonoBehaviour {
 
@@ -34,13 +35,12 @@ public class WireQuiz : MonoBehaviour {
 	private int phaseCount;
 	private int phase = 1;
 
-	// All questions we will choose from
-	private static List<QuizQuestion> availableQuestions = new List<QuizQuestion>();
 	// Questions loaded, one per phase
-	private List<QuizQuestion> questions = new List<QuizQuestion>();
+    private List<Question> questions = new List<Question>();
+    private Question currentQuestion;
 
-	// List that holds the remaining wires left to cut (when size is 1, should be correct answer, next phase)
-	private List<Color> uncutColors = new List<Color>();
+    // List that holds the remaining wires left to cut (when size is 1, should be correct answer, next phase)
+    private List<Color> uncutColors = new List<Color>();
 
 	/// <summary>
 	/// The following keeps track at which index is the color/mesh used to handle detection/change
@@ -70,78 +70,62 @@ public class WireQuiz : MonoBehaviour {
 		}
 
 		// get config
-		if (!Tablet.chosenCourse.HasConfig("WireQuiz")) {
+		if (!Tablet.chosenCourse.HasConfig("WireElimination")) {
 			manualSectionText.text = "CNFG";
 			return;
 		}
+        string config = Tablet.chosenCourse.GetConfig("WireElimination");
+        Config jsonConfig = JsonConvert.DeserializeObject<Config>(config);
 
-		string config = Tablet.chosenCourse.GetConfig("WireQuiz");
+        // checks that the config contains at least five questions
+        if(jsonConfig.questions.Length < 5) {
+            manualSectionText.text = "ERR1";
+            return;
+        }
 
+        // get number of questions
+        phaseCount = Random.Range(3, 6);
 
-        string[] lines = config.Split('\n');
-		if (config == "" || lines.Length == 0) {
-			// error
-			manualSectionText.text = "ERR1";
-			return;
-		}
-		foreach (string line in lines) {
-			// try to load a question
-			string dataStr = line.Trim();
-			string[] data = dataStr.Split(',');
-			if (data.Length != 3) {
-				manualSectionText.text = "ERR2";
-				return;
-			} else {
-				// first is question title, second is correct color, third is number of answers (wires)
-				data[0] = data[0].Trim();
-				data[1] = data[1].Trim();
-				data[2] = data[2].Trim();
+        // picks random questions, verifies them, then adds them to the list
+        for(int i = 0; i < phaseCount; i++) {
+            Question question;
+            do {
+                question = jsonConfig.questions[Random.Range(0, jsonConfig.questions.Length)];
+            } while(questions.Contains(question));
+            //Color answer;
 
-				Color color;
-                /*if (!ColorUtility.TryParseHtmlString(data[1], out color) || !availableColors.Contains(color)) {
-					manualSectionText.text = "ERR3";
-					return;
-				}*/
-                if (!ColorUtility.TryParseHtmlString(data[1], out color))
-                {
+            // checks that the question is not empty
+            if(question.question.Length == 0) {
+                manualSectionText.text = "ERR2";
+                return;
+            }
+
+            // checks that each option is a valid color
+            foreach(string option in question.options) {
+                Color optionColor;
+                if (!ColorUtility.TryParseHtmlString(question.answer, out optionColor)) {
                     manualSectionText.text = "ERR3";
                     return;
-                }
-                else
-                {
-                    if (!availableColors.Contains(color))
-                    {
+                } else {
+                    if(!availableColors.Contains(optionColor)) {
                         manualSectionText.text = "ERR3.1";
                         return;
                     }
                 }
+            }
 
-                int answerCount;
-				if (!int.TryParse(data[2], out answerCount)) {
-					manualSectionText.text = "ERR4";
-					return;
-				}
-				if (answerCount < 1) {
-					answerCount = 1;
-				}
-				if (answerCount > 5) {
-					answerCount = 5;
-				}
-
-				QuizQuestion question = new QuizQuestion(data[0], answerCount, color);
-				availableQuestions.Add(question);
-			}
-		}
-
-		// get number of questions
-		phaseCount = Random.Range(3, 6);
-
-		// choose questions (no repeats)
-		for (int i = 0; i < phaseCount && availableQuestions.Count > 0; i++) {
-			QuizQuestion selection = availableQuestions[Random.Range(0, availableQuestions.Count)];
-			questions.Add(selection);
-			availableQuestions.Remove(selection);
-		}
+            // checks that the answer is a valid color
+            if(!ColorUtility.TryParseHtmlString(question.answer, out question.answerColor)) {
+                manualSectionText.text = "ERR3";
+                return;
+            } else {
+                if(!availableColors.Contains(question.answerColor)) {
+                    manualSectionText.text = "ERR3.1";
+                    return;
+                }
+            }
+            questions.Add(question);
+        }
 
 		// fix phase count to questions if need be
 		if (phaseCount > questions.Count) {
@@ -159,15 +143,6 @@ public class WireQuiz : MonoBehaviour {
 
 		// setup first question
 		SetPhase(phase);
-
-
-
-
-        ConditionParser conditionParser = new ConditionParser(BombInfo);
-        Condition condition = conditionParser.Parse("serial.even");
-        List<string> widgets = conditionParser.Check(condition);
-        //manualSectionText.text = widgets[0];
-        //Debug.Log(widgets);
     }
 
 	private void Update() {
@@ -194,7 +169,6 @@ public class WireQuiz : MonoBehaviour {
 				indicators[i].sharedMaterial = indicatorActive;
 			}
 		}
-
 		if (this.phase == phaseCount + 1) {
 			// they win the module
 			BombModule.HandlePass();
@@ -202,52 +176,47 @@ public class WireQuiz : MonoBehaviour {
 			return;
 		}
 
-		// set question text
-		manualSectionText.text = questions[phase - 1].title;
+        // set question text
+        currentQuestion = questions[phase - 1];
+		manualSectionText.text = Tablet.chosenCourse.language.Format(currentQuestion.question);
 
 		// setup wires
 		List<int> availableConnections = new List<int>() { 0, 1, 2, 3, 4 };
-		List<Color> remainingColors = new List<Color>(availableColors);
+        List<Color> optionColors = new List<Color>();
+        foreach(string colorString in currentQuestion.options) {
+            Color colorObject;
+            ColorUtility.TryParseHtmlString(colorString, out colorObject);
+            if(availableColors.Contains(colorObject)) {
+                optionColors.Add(colorObject);
+            }
+        }
 		uncutColors.Clear();
-		// go until we have satisfied all answers or ran out of available colors
-		for (int i = 0; i < questions[phase - 1].answerCount && remainingColors.Count > 0; i++) {
-			int connectionIndex = availableConnections[Random.Range(0, availableConnections.Count)];
-			availableConnections.Remove(connectionIndex);
+        // go until we have satisfied all answers or ran out of available colors
+        foreach (Color optionColor in optionColors) {
+            int connectionIndex = availableConnections[Random.Range(0, availableConnections.Count)];
+            availableConnections.Remove(connectionIndex);
 
-			// Get wire at that connection
-			GameObject wire = wireConnections[connectionIndex].GetChild(0).gameObject;
-			wire.SetActive(true);
+            // Get wire at that connection
+            GameObject wire = wireConnections[connectionIndex].GetChild(0).gameObject;
+            wire.SetActive(true);
 
-			// replace mesh back to full wire
-			wire.GetComponent<MeshFilter>().sharedMesh = wireMeshes[wireMeshIndex[connectionIndex]];
-			
-			// change color to desired color
-			Color color;
-			if (i == 0) {
-				// do correct answer color first to make sure it's done
-				color = questions[phase - 1].correctColor;
-			} else {
-				color = remainingColors[Random.Range(0, remainingColors.Count)];
-			}
-			wireColorIndex[connectionIndex] = color;
-			MeshRenderer mr = wire.GetComponent<MeshRenderer>();
-			mr.sharedMaterial = new Material(mr.sharedMaterial);
-			mr.sharedMaterial.SetColor("_Color", color);
-			remainingColors.Remove(color);
-			uncutColors.Add(color);			
-		}
-
+            // replace mesh back to full wire
+            wire.GetComponent<MeshFilter>().sharedMesh = wireMeshes[wireMeshIndex[connectionIndex]];
+            wireColorIndex[connectionIndex] = optionColor;
+            MeshRenderer mr = wire.GetComponent<MeshRenderer>();
+            mr.sharedMaterial = new Material(mr.sharedMaterial);
+            mr.sharedMaterial.SetColor("_Color", optionColor);
+            uncutColors.Add(optionColor);
+        }
 		foreach (int c in availableConnections) {
 			wireConnections[c].GetChild(0).gameObject.SetActive(false);
 		}
 	}
 
+    // runs whenever a wire gets cut
 	public void HandleWireCut(int wireIndex) {
 		if (waitForTimer)
 			return;
-
-		// if we cut the correct wire, strike. 
-		// if after cutting this wire, there is only one wire left, pass.
 
 		// switch meshes
 		selfSelectable.Children[4 - wireIndex].GetComponent<MeshFilter>().sharedMesh = wireCutMeshes[wireMeshIndex[wireIndex]];
@@ -258,8 +227,9 @@ public class WireQuiz : MonoBehaviour {
 		// react to the wire cut
 		Color wireColor = wireColorIndex[wireIndex];
 
-		if (wireColor == questions[phase - 1].correctColor) {
+		if (wireColor == questions[phase - 1].answerColor) {
 			if (phase == 1) {
+
 				// they failed on their first time...timer enable!
 				waitForTimer = true;
 				firstFailTimer = 15f;
@@ -275,26 +245,22 @@ public class WireQuiz : MonoBehaviour {
 		}
 	}
 
+    // runs when the bomb explodes
 	public void OnBombExploded() {
 		solved = true;
 	}
 
-	private class QuizQuestion {
+    // represents a question from the config
+    private class Question {
+        public string question;
+        public string[] options;
+        public string answer;
+        public Color answerColor;
+    }
 
-		public string title;
-		public int answerCount;
-		public Color correctColor;
-
-		public QuizQuestion(string title, int answerCount, Color correctColor) {
-			this.title = title;
-			this.answerCount = answerCount;
-			this.correctColor = correctColor;
-		}
-		
-		public override string ToString() {
-			return "Question: " + title + ", Answers: " + answerCount + ", Color: " + correctColor;
-		}
-
-	}
+    // represents the config that the module receives
+    private class Config {
+        public Question[] questions;
+    }
 }
 
