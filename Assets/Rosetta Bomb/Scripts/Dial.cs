@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using Newtonsoft.Json;
 
-public class Binyamin : MonoBehaviour {
+public class Dial : MonoBehaviour {
 
 	public KMNeedyModule module;
     public KMBombInfo bombInfo;
@@ -18,70 +18,52 @@ public class Binyamin : MonoBehaviour {
 
     private int position = 0;
     private string message;
-    private string[] answers;
+    private Word[] words;
     private int currentAnswer;
     private string[] answer;
     private int index = -1;
 
 	private int largestPosition = -1;
 
-    // select new 
-    private string GetNextAnswer() {
+    // selects new word
+    private Word GetNextWord() {
         index++;
-        if(index == 0) {
-            Utilities.RandomizeArray(answers);
-        }
-        return answers[index % answers.Length];
+        //return words[index % words.Length];
+        return words[Random.Range(0, words.Length)];
     }
 
     // Use this for initialization
-    void Start () {
-
-		if (!Tablet.chosenCourse.HasConfig("Binyamin")) {
+    void Start() {
+		if(!Tablet.chosenCourse.HasConfig("Dial")) {
 			displayText.text = "CONFG";
 			return;
 		}
 
-		string config = Tablet.chosenCourse.GetConfig("Binyamin");
+        //string config = Tablet.chosenCourse.GetConfig("Binyamin");
+        string config = Tablet.chosenCourse.GetConfig("Dial");
+        Config jsonConfig = JsonConvert.DeserializeObject<Config>(config);
+        words = jsonConfig.words;
 
-        //answers = new int[] { 3, 5, 6, 3, 7, 4, 2, 1, 2, 5, 7 };
-
-        // checks that config is not empty
-        if(config.Length == 0 || config == "") {
+        // checks that the config contains words to use
+        if(jsonConfig.words.Length == 0) {
             displayText.text = "ERR0";
             return;
         }
-        answers = config.Trim().Split('\n');
-
-        // checks that questions are defined
-        if(answers.Length == 0)
-        {
-            displayText.text = "ERR1";
-            return;
+        
+        largestPosition = -1;
+        foreach (Word word in words) {
+            if(word.answer > largestPosition) {
+                largestPosition = word.answer;
+            }
         }
-
-		// setup options
-		largestPosition = -1;
-		foreach (string answer in answers) {
-			try {
-				int number = int.Parse(answer.Split(',')[0]);
-				if (number > largestPosition) {
-					largestPosition = number;
-				}
-			} catch (Exception e) {
-				displayText.text = "ERR5";
-				return;
-			}
-		}
-		if (largestPosition != -1) {
+		if(largestPosition != -1) {
 			for (int i = 0; i < largestPosition; i++) {
 				GameObject newSelection = Instantiate(selectionText.gameObject, selectionText.parent);
 				newSelection.transform.localEulerAngles = new Vector3(0f, 0f, (i + 1) * (360f / (largestPosition + 1)));
 				newSelection.transform.GetChild(0).GetComponent<TextMesh>().text = (i + 1) + "";
 			}
-
 		} else {
-			displayText.text = "ERR4";
+			displayText.text = "ERR1";
 			return;
 		}
 
@@ -91,20 +73,9 @@ public class Binyamin : MonoBehaviour {
             // reset selected answer text object
             position = 0;
             positionText.text = position.ToString();
-
-            // select a random question from the list
-            answer = GetNextAnswer().Trim().Split(',');
-            bool parse = int.TryParse(answer[0], out currentAnswer);
-            if(parse) {
-				//displayText.text = answer[1];
-				displayText.text = Tablet.chosenCourse.language.Format(answer[1]);
-                //displayText.text = language.SendText(textFormatter, language, answer[1]);
-                Debug.Log(currentAnswer);
-            }
-            else {
-                currentAnswer = -1;
-                displayText.text = "ERR2";
-            }
+            Word currentWord = GetNextWord();
+            displayText.text = Tablet.chosenCourse.language.Format(currentWord.word);
+            currentAnswer = currentWord.answer;
         };
 
         // controls dial position/answer selection
@@ -115,7 +86,6 @@ public class Binyamin : MonoBehaviour {
             else {
                 position = 0;
             }
-
             Debug.Log(position);
 
             // rotate dial to next position
@@ -131,12 +101,20 @@ public class Binyamin : MonoBehaviour {
                 }
             }
         };
-
     }
 
 	private void Update() {
-
 		knobParent.localRotation = Quaternion.Lerp(knobParent.localRotation, Quaternion.Euler(new Vector3(-90f, 0f, position * (360f / (largestPosition + 1)))), Time.deltaTime * knobSmoothSpeed);
-
 	}
+
+    // represents a word from the config
+    private class Word {
+        public string word;
+        public int answer;
+    }
+
+    // represents the config that the module receives
+    private class Config {
+        public Word[] words;
+    }
 }

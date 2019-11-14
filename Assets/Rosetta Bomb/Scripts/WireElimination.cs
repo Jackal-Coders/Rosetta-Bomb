@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class WireQuiz : MonoBehaviour {
+public class WireElimination : MonoBehaviour {
 
 	// Generic bomb info and references (not necessary)
 	public KMBombInfo BombInfo;
