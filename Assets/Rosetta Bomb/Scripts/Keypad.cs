@@ -6,10 +6,10 @@
 // else, load next question
 // if not, do nothing
 
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class Keypad : MonoBehaviour {
 
@@ -40,14 +40,39 @@ public class Keypad : MonoBehaviour {
 	private int questionNumber = -1;
 	private int[] answers;
 
+    // 26 symbols
 	public static string[] symbols = new string[] {
-	"☢",
-	"☵",
-	"↗",
-	"♃",
-	"♟",
-	"☄"
-	};
+	    "☢",
+	    "☵",
+	    "↗",
+	    "♃",
+	    "♟",
+	    "☄",
+        "℞",
+        "℟",
+        "℈",
+        "⇄",
+        "⇆",
+        "↺",
+        "↻",
+        "௳",
+        "↜",
+        "↝",
+        "↢",
+        "↤",
+        "↞",
+        "⌘",
+        "≃",
+        "≂",
+        "≸",
+        "⊾",
+        "⋬",
+        "⋑",
+        "⊶",
+        "⊷",
+        "⊪",
+        "⊫"
+    };
 
 	// Use this for initialization
 	void Start() {
@@ -56,11 +81,13 @@ public class Keypad : MonoBehaviour {
 			questionText.text = "CNFG";
 			return;
 		}
-
 		string config = Tablet.chosenCourse.GetConfig("SymbolKeypad");
+        Config jsonConfig = JsonConvert.DeserializeObject<Config>(config);
 
+        //Group chosenGroup = jsonConfig.groups[Random.Range(0, jsonConfig.groups.Length)];
+        Question chosenQuestion = jsonConfig.questions[Random.Range(0, jsonConfig.questions.Length)];
 
-		if (config.Length == 0 || config == "") {
+        if (config.Length == 0 || config == "") {
 			questionText.text = "ERR0";
 			return;
 		}
@@ -69,9 +96,11 @@ public class Keypad : MonoBehaviour {
 			questionText.text = "ERR1";
 			return;
 		}
-		passageNumber = UnityEngine.Random.Range(0, passages.Length);
-		string[] answerStrs = passages[passageNumber].Trim().Split(',');
-		if (answerStrs.Length == 0) {
+		passageNumber = Random.Range(0, passages.Length);
+        //string[] answerStrs = passages[passageNumber].Trim().Split(',');
+        string[] answerStrs = chosenQuestion.answers;
+
+        if (answerStrs.Length == 0) {
 			questionText.text = "ERR2";
 			return;
 		}
@@ -85,14 +114,43 @@ public class Keypad : MonoBehaviour {
 
 		questionNumber = 0;
 
-		// randomize order of button symbols
-		string[] newSymbols = new string[symbols.Length];
-		Array.Copy(symbols, newSymbols, symbols.Length);
-		Queue<string> remainingSymbols = new Queue<string>(Utilities.RandomizeArray(newSymbols));
+        // randomize order of button symbols
+        //string[] newSymbols = new string[symbols.Length];
+        string[] newSymbols = new string[6];
+        string[] otherSymbols = new string[symbols.Length - answerStrs.Length];
+        int newIdx = 0;
+        int otherIdx = 0;
+        for(int i = 0; i < symbols.Length; i++) {
+            bool found = false;
+            foreach(string answer in answerStrs) {
+                if(i == (int.Parse(answer) - 1)) {
+                    found = true;
+                }
+            }
+            if(found) {
+                Debug.Log("newIdx: " + newIdx);
+                newSymbols[newIdx] = symbols[i];
+                newIdx++;
+            } else {
+                Debug.Log("otherIdx: " + otherIdx);
+                otherSymbols[otherIdx] = symbols[i];
+                otherIdx++;
+            }
+        }
+
+        Queue<string> otherSymbolsQueue = new Queue<string>(Utilities.RandomizeArray(otherSymbols));
+        while(newIdx < 6) {
+            Debug.Log("newIdx: " + newIdx);
+            newSymbols[newIdx] = otherSymbolsQueue.Dequeue();
+            newIdx++;
+        }
+
+		//Array.Copy(symbols, newSymbols, symbols.Length);
+		Queue<string> usableSymbols = new Queue<string>(Utilities.RandomizeArray(newSymbols));
 		
 		// assign symbols to text renderers
 		foreach (TextMesh textMesh in buttonTexts) {
-			textMesh.text = remainingSymbols.Dequeue();
+			textMesh.text = usableSymbols.Dequeue();
 		}
 
 		int index = 0;
@@ -141,7 +199,7 @@ public class Keypad : MonoBehaviour {
 				} else {
 					questionNumber++;
 					lastIndicator.sharedMaterial = selectedLightOff;
-					questionText.text = (passageNumber + 1) + "." + (questionNumber + 1);
+					//questionText.text = (passageNumber + 1) + "." + (questionNumber + 1);
 				}
 			} else {
 				lastIndicator.sharedMaterial = selectedLightOff;
@@ -152,8 +210,17 @@ public class Keypad : MonoBehaviour {
 			return false;
 		};
 
-		questionText.text = (passageNumber + 1) + "." + (questionNumber + 1);
+        //questionText.text = (passageNumber + 1) + "." + (questionNumber + 1);
+        questionText.text = Tablet.chosenCourse.language.Format(chosenQuestion.question);
+    }
 
+    private class Question {
+        public string question;
+        public string[] answers;
+    }
 
-	}
+    // represents the config that the module receives
+    private class Config {
+        public Question[] questions;
+    }
 }

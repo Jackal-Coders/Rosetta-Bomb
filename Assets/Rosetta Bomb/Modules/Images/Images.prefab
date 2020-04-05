@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 33588079912566474}
   - component: {fileID: 65279914734607402}
   - component: {fileID: 23044191944411010}
+  - component: {fileID: 114842548711385576}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -77,7 +78,7 @@ GameObject:
   - component: {fileID: 114477998937995820}
   - component: {fileID: 114118946745312056}
   m_Layer: 0
-  m_Name: TemplateModule
+  m_Name: Images
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,6 +350,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - KT/Mobile/Diffuse
+--- !u!114 &114842548711385576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1534603937389102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - Standard
 --- !u!114 &114860041498549902
 MonoBehaviour:
   m_ObjectHideFlags: 1

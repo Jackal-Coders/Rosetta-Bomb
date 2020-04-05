@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: readingMed
   m_EditorClassIdentifier: 
   DisplayName: Reading - Medium
-  Description: Focuses on reading comprehension. Contains 2 Wire Quiz modules & 1
-    Binyanim module.
+  Description: Focuses on reading comprehension. Contains 2 Wire Elimination modules
+    & 1 Dial needy module.
   GeneratorSetting:
     TimeLimit: 480
     NumStrikes: 3
